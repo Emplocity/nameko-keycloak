@@ -2,12 +2,14 @@ from unittest.mock import Mock
 
 from nameko_keycloak.auth import AuthenticationService
 
+from .models import USERS
 
-def test_authentication_service_get_user_from_request(keycloak, users):
+
+def test_authentication_service_get_user_from_request(keycloak):
     def fetch_user(email):
-        return users.get(email)
+        return USERS.get(email)
 
-    user = users["bob@example.com"]
+    user = USERS["bob@example.com"]
     token_payload = keycloak.token(code=user.email)
     access_token = token_payload["access_token"]
 
