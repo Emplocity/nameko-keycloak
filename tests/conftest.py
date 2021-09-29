@@ -1,12 +1,13 @@
 from json import dumps
-from unittest.mock import MagicMock
 from typing import Any, Dict
+from unittest.mock import MagicMock
 
 import pytest
-from nameko_keycloak.auth import AuthenticationService
-from nameko_keycloak.fakes import FakeKeycloak
 from werkzeug.datastructures import MultiDict
 from werkzeug.wrappers import Request
+
+from nameko_keycloak.auth import AuthenticationService
+from nameko_keycloak.fakes import FakeKeycloak
 
 from .models import USERS
 

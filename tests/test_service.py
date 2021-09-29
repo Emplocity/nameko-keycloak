@@ -3,14 +3,14 @@ from typing import Optional
 
 import pytest
 from keycloak.exceptions import KeycloakError
-from nameko.web.handlers import http
 from nameko.testing.services import worker_factory
+from nameko.web.handlers import http
+from werkzeug.http import parse_cookie
+from werkzeug.wrappers import Request, Response
 
 from nameko_keycloak.dependencies import KeycloakProvider
 from nameko_keycloak.fakes import FakeKeycloak
 from nameko_keycloak.service import KeycloakSsoServiceMixin
-from werkzeug.http import parse_cookie
-from werkzeug.wrappers import Request, Response
 
 from .models import USERS, User
 
