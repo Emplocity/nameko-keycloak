@@ -45,6 +45,6 @@ setup(
         "python-keycloak>=0.25.0,<1.0",
         "python-jose>=3.0,<4.0",
         "cryptography>=3.0,<4.0",
-        "werkzeug>=1.0,<2.0",
+        "werkzeug>=1.0,<3.0",
     ],
 )
