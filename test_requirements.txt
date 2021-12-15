@@ -1,3 +1,9 @@
-coverage==5.5.0
-pytest==6.0.2
-pytest-cov==2.12.1
+black==21.9b0
+coverage==6.2
+flake8==4.0.1
+isort==5.10.1
+mypy==0.910
+pre-commit==2.16.0
+pytest==6.2.5
+pytest-cov==3.0.0
+rstcheck==3.3.1
