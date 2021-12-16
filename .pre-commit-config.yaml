@@ -20,6 +20,11 @@ repos:
         language: system
         entry: flake8
         types: [python]
+      - id: mypy
+        name: mypy
+        language: system
+        entry: mypy
+        types: [python]
       - id: rstcheck
         name: rstcheck
         language: system

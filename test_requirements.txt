@@ -7,3 +7,4 @@ pre-commit==2.16.0
 pytest==6.2.5
 pytest-cov==3.0.0
 rstcheck==3.3.1
+types-setuptools==57.4.4

@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from typing import Optional
 
 import pytest
@@ -17,7 +18,7 @@ from .models import USERS, User
 
 class MyService(KeycloakSsoServiceMixin):
     name = "my_service"
-    keycloak = KeycloakProvider("./keycloak.json")
+    keycloak = KeycloakProvider(Path("./keycloak.json"))
     sso_cookie_prefix = "my-service"
     sso_login_url = "/login-sso"
     sso_token_url = "/token-sso"
