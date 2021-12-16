@@ -4,6 +4,7 @@ graft tests
 include .bumpversion.cfg
 include .coveragerc
 include .flake8
+include .pre-commit-config.yaml
 include AUTHORS.rst
 include CHANGELOG.rst
 include CONTRIBUTING.rst
