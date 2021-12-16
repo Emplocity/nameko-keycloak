@@ -45,7 +45,7 @@ setup(
         "nameko>=2,<3",
         "python-keycloak>=0.25.0,<1.0",
         "python-jose>=3.0,<4.0",
-        "cryptography>=3.0,<4.0",
+        "cryptography>=3.4",
         "werkzeug>=1.0,<3.0",
     ],
 )
