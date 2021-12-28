@@ -62,7 +62,10 @@ Helpers to integrate Single Sign-On in nameko_-based applications using Keycloak
 Features
 ========
 
- - TODO
+ - nameko service mixin
+ - database and model-agnostic user management
+ - authentication service
+ - fake Keycloak client for use in tests
 
 Installation
 ============

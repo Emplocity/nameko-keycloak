@@ -25,7 +25,7 @@ class KeycloakSsoServiceMixin:
     Add this to your nameko service to provide SSO authentication with Keycloak.
 
     This mixin exposes five methods prefixed with ``keycloak_``, which you
-    should use in your HTTP service. Delegate from your entrypoints like this:
+    should use in your HTTP service. Delegate from your entrypoints like this::
 
         @http("GET", "/login")
         def login_sso(self, request):
@@ -36,15 +36,12 @@ class KeycloakSsoServiceMixin:
 
     Expected service dependencies or class attributes:
 
-     - ``keycloak`` which must be an instance of
-        :class:`dependencies.KeycloakProvider`
-     - ``sso_cookie_prefix`` - a string that will be used to namespace cookies
-        (useful when there are multiple SSO-enabled apps hosted on same domain)
+     - ``keycloak`` which must be an instance of :class:`~nameko_keycloak.dependencies.KeycloakProvider`
+     - ``sso_cookie_prefix`` - a string that will be used to namespace cookies (useful when there are multiple SSO-enabled apps hosted on same domain)
      - ``sso_login_url`` - absolute URL to handler which delegates to :meth:`keycloak_login_sso`
      - ``sso_token_url`` - absolute URL to handler which delegates to :meth:`keycloak_token_sso`
      - ``sso_refresh_token_url`` - absolute URL to handler which delegates to :meth:`keycloak_refresh_token_sso`
-     - ``frontend_url`` - absolute URL to a user-facing web app that
-        communicates with this backend service
+     - ``frontend_url`` - absolute URL to a user-facing web app that communicates with this backend service
 
     TODO: document ``fetch_user`` and hooks
 
