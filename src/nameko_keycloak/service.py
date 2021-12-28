@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 class HookMethod(enum.Enum):
-    # TODO: document how these map to service methods
     SUCCESS = "keycloak_success"
     FAILURE = "keycloak_failure"
 
