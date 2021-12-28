@@ -85,15 +85,44 @@ Usage
 
 .. include-section-usage-start
 
-TODO usage example
-------------------
+To set up SSO with Keycloak in your nameko service, follow these steps.
+
+1. Get Keycloak configuration from realm -> Clients -> Installation, download
+   as Keycloak OIDC JSON.
+
+   .. note::
+      Make sure ``auth-server-url`` ends with a trailing slash.
+
+   Save this configuration in a .json file.
+2. Add the mixin and dependency provider to your service and point to OIDC
+   JSON config::
+
+       from nameko_keycloak.dependencies import KeycloakProvider
+       from nameko_keycloak.service import KeycloakSsoServiceMixin
+
+       class MyService(KeycloakSsoServiceMixin):
+           keycloak = KeycloakProvider("/tmp/keycloak.json")
+
+3. Set up URLs for HTTP endpoints. The mixin exposes five methods prefixed
+   with ``keycloak_``, which you should use in your HTTP service.
+   Delegate from your entrypoints like this::
+
+        @http("GET", "/login")
+        def login_sso(self, request):
+            return self.keycloak_login_sso(request)
+
+   This way it is up to you to control the URL routes and any middleware
+   or extra request handling (such as CORS headers).
+
+4. TODO: ``fetch_user``
+5. TODO: hooks
 
 .. include-section-usage-end
 
 Documentation
 =============
 
-TODO
+https://nameko-keycloak.readthedocs.io/
 
 
 Authors
