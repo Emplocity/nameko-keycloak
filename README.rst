@@ -45,9 +45,9 @@ nameko-keycloak
     :alt: Supported implementations
     :target: https://pypi.org/project/nameko-keycloak
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/Emplocity/nameko-keycloak/v0.1.2.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/Emplocity/nameko-keycloak/v0.2.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/Emplocity/nameko-keycloak/compare/v0.1.2...master
+    :target: https://github.com/Emplocity/nameko-keycloak/compare/v0.2.0...master
 
 .. end-badges
 
