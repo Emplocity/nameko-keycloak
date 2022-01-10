@@ -10,7 +10,9 @@ from .types import FetchUserCallable, Token, User
 logger = logging.getLogger(__name__)
 
 
-def get_token_from_request(request: Request) -> Token:
+def get_token_from_request(request: Request) -> Optional[Token]:
+    if "Authorization" not in request.headers:
+        return None
     header = request.headers["Authorization"]
     token = header.replace("Bearer ", "", 1)
     return token
@@ -45,6 +47,8 @@ class AuthenticationService:
         Find a local User corresponding to some token in the HTTP request.
         """
         token = get_token_from_request(request)
+        if not token:
+            return None
         return self._get_user(token)
 
     def _get_user(self, access_token: Token) -> Optional[User]:
