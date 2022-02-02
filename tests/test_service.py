@@ -12,6 +12,7 @@ from werkzeug.wrappers import Request, Response
 from nameko_keycloak.dependencies import KeycloakProvider
 from nameko_keycloak.fakes import FakeKeycloak
 from nameko_keycloak.service import KeycloakSsoServiceMixin
+from nameko_keycloak.types import TokenPayload
 
 from .models import USERS, User
 
@@ -45,7 +46,7 @@ class MyService(KeycloakSsoServiceMixin):
     def logout(self, request: Request) -> Response:
         return self.keycloak_logout(request)
 
-    def fetch_user(self, email: str) -> Optional[User]:
+    def fetch_user(self, email: str, token_payload: TokenPayload) -> Optional[User]:
         return USERS.get(email)
 
 

@@ -62,4 +62,4 @@ class AuthenticationService:
         token_payload = self.get_token_payload(access_token)
         if not token_payload:
             return None
-        return self.fetch_user(token_payload["email"])
+        return self.fetch_user(token_payload["email"], token_payload)

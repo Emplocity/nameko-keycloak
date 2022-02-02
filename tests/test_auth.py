@@ -5,7 +5,7 @@ from nameko_keycloak.auth import AuthenticationService
 from .models import USERS
 
 
-def fetch_user(email):
+def fetch_user(email, token_payload):
     return USERS.get(email)
 
 
