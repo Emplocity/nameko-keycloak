@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.4.0 (2022-02-03)
+------------------
+
+ * [Breaking change] ``fetch_user`` callback now takes two arguments: email
+   and token payload. This allows the clients to augment their User instances
+   with arbitrary data encoded in the token.
+
 0.3.0 (2022-01-10)
 ------------------
 
