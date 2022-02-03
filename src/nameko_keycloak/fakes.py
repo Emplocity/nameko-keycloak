@@ -45,6 +45,8 @@ class FakeKeycloak:
             "refresh_expires_in": "REXP",
             "refresh_token_url": "http://keycloak.url/refresh",
         }
+        # allow arbitrary key-value data in payload
+        token_payload.update(kwargs)
         self.token_payloads[token] = token_payload
         return token_payload
 

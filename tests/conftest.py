@@ -19,7 +19,7 @@ def keycloak():
 
 @pytest.fixture
 def authentication_service(keycloak):
-    def _fetch_user(email):
+    def _fetch_user(email, token_payload):
         return USERS.get(email)
 
     return AuthenticationService(keycloak, _fetch_user)

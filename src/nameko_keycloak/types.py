@@ -4,4 +4,4 @@ from typing import Any, Callable, Dict, Optional
 User = Any
 Token = str
 TokenPayload = Dict[str, Any]
-FetchUserCallable = Callable[[str], Optional[User]]
+FetchUserCallable = Callable[[str, TokenPayload], Optional[User]]

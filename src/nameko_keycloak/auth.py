@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from jose import JOSEError
 from keycloak import KeycloakOpenID
@@ -51,12 +51,15 @@ class AuthenticationService:
             return None
         return self._get_user(token)
 
-    def _get_user(self, access_token: Token) -> Optional[User]:
+    def get_token_payload(self, access_token: Token) -> Dict[str, Any]:
         try:
-            token_payload = self.keycloak.decode_token(
-                access_token, self.keycloak.certs()
-            )
+            return self.keycloak.decode_token(access_token, self.keycloak.certs())
         except JOSEError:
             logger.exception("Failed to decode access token")
+            return {}
+
+    def _get_user(self, access_token: Token) -> Optional[User]:
+        token_payload = self.get_token_payload(access_token)
+        if not token_payload:
             return None
-        return self.fetch_user(token_payload["email"])
+        return self.fetch_user(token_payload["email"], token_payload)
