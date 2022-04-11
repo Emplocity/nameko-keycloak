@@ -126,22 +126,27 @@ class KeycloakSsoServiceMixin:
         response.set_cookie(
             key=f"{self.sso_cookie_prefix}_access-token",
             value=token_payload["access_token"],
+            secure=True,
         )
         response.set_cookie(
             key=f"{self.sso_cookie_prefix}_expires-in",
             value=str(token_payload["expires_in"]),
+            secure=True,
         )
         response.set_cookie(
             key=f"{self.sso_cookie_prefix}_refresh-token",
             value=token_payload["refresh_token"],
+            secure=True,
         )
         response.set_cookie(
             key=f"{self.sso_cookie_prefix}_refresh-expires-in",
             value=str(token_payload["refresh_expires_in"]),
+            secure=True,
         )
         response.set_cookie(
             key=f"{self.sso_cookie_prefix}_refresh-token-url",
             value=self.sso_refresh_token_url,
+            secure=True,
         )
         return response
 
