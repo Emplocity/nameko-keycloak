@@ -11,7 +11,7 @@ with open("README.rst", "r") as f:
 
 setup(
     name="nameko-keycloak",
-    version="0.4.0",
+    version="0.5.0",
     license="Apache-2.0",
     description="Helpers to integrate Single Sign-On in nameko-based applications using Keycloak.",
     long_description=long_description,
