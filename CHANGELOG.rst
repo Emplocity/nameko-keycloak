@@ -1,19 +1,25 @@
 Changelog
 =========
 
+0.5.0 (2022-04-12)
+------------------
+
+* Add Secure=true flag to all cookies. This requires serving over HTTPS only,
+  but you should be doing that already if you care about security.
+
 0.4.0 (2022-02-03)
 ------------------
 
- * [Breaking change] ``fetch_user`` callback now takes two arguments: email
-   and token payload. This allows the clients to augment their User instances
-   with arbitrary data encoded in the token.
+* [Breaking change] ``fetch_user`` callback now takes two arguments: email
+  and token payload. This allows the clients to augment their User instances
+  with arbitrary data encoded in the token.
 
 0.3.0 (2022-01-10)
 ------------------
 
- * [Breaking change] ``get_token_from_request`` now returns ``Optional[Token]``.
-   This fixes a KeyError in ``AuthenticationService``, but it is technically
-   a breaking change since ``get_token_from_request`` could be used on its own.
+* [Breaking change] ``get_token_from_request`` now returns ``Optional[Token]``.
+  This fixes a KeyError in ``AuthenticationService``, but it is technically
+  a breaking change since ``get_token_from_request`` could be used on its own.
 
 0.2.0 (2021-12-28)
 ------------------
