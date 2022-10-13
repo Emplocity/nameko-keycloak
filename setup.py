@@ -43,7 +43,7 @@ setup(
     python_requires=">=3.8.*",
     install_requires=[
         "nameko>=2,<4",
-        "python-keycloak>=0.25.0,<1.0",
+        "python-keycloak>=0.25.0",
         "python-jose>=3.0,<4.0",
         "cryptography>=3.4",
         "werkzeug>=1.0,<3.0",
