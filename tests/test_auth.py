@@ -10,7 +10,6 @@ def fetch_user(email, token_payload):
 
 
 def test_authentication_service_get_user_from_request(keycloak):
-
     user = USERS["bob@example.com"]
     token_payload = keycloak.token(code=user.email)
     access_token = token_payload["access_token"]
@@ -35,7 +34,6 @@ def test_authentication_service_get_user_from_request_anonymous(keycloak):
 
 
 def test_authentication_service_get_token_payload(keycloak):
-
     user = USERS["bob@example.com"]
     token_payload = keycloak.token(code=user.email)
     access_token = token_payload["access_token"]

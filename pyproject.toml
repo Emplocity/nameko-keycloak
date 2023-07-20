@@ -1,5 +1,84 @@
 [build-system]
-requires = [
-    "setuptools>=30.3.0",
-    "wheel",
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nameko-keycloak"
+description = "Helpers to integrate Single Sign-On in nameko-based applications using Keycloak."
+version = "0.7.0"
+requires-python = ">=3.8"
+authors = [{name="Emplocity"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Utilities",
 ]
+readme = "README.rst"
+urls = {Homepage = "https://github.com/emplocity/nameko-keycloak"}
+dependencies = [
+    "nameko>=2,<4",
+    "python-keycloak>=0.25.0",
+    "python-jose>=3.0,<4.0",
+    "cryptography>=3.4",
+    "werkzeug>=1.0,<3.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=6.2.5,<7.0"]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+license-files = [
+    "LICENSE",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist =
+    check, py{38,39,310}-nameko{2,3}
+
+[testenv]
+deps =
+    nameko2: nameko>=2.14,<3
+    nameko3: nameko>=3.0.0rc11,<4
+    -rtest_requirements.txt
+commands =
+    {posargs:pytest --cov={envsitepackagesdir}/nameko_keycloak -vv}
+
+[testenv:check]
+deps =
+    -rtest_requirements.txt
+    build
+    check-manifest
+    docutils
+    pygments
+    readme-renderer
+    twine
+skip_install = true
+commands =
+    python -m build
+    twine check dist/*
+    check-manifest {toxinidir}
+    flake8 src tests setup.py
+    isort --verbose --check-only --diff src tests setup.py
+    mypy src
+
+[gh-actions]
+python =
+    3.8: py38-nameko2, py38-nameko3
+    3.9: py39-nameko2, py39-nameko3
+    3.10: py310-nameko2, py310-nameko3, check
+
+"""
