@@ -42,6 +42,27 @@ license-files = [
     "LICENSE",
 ]
 
+[tool.mypy]
+python_version = "3.8"
+mypy_path = ["src/", "tests/"]
+namespace_packages = true
+no_implicit_optional = true
+no_implicit_reexport = true
+strict_equality = true
+warn_redundant_casts = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "eventlet.*",
+    "jose.*",
+    "keycloak.*",
+    "nameko.*",
+    "pytest.*",
+    "werkzeug.*",
+]
+ignore_missing_imports = true
+
 [tool.tox]
 legacy_tox_ini = """
 [tox]
