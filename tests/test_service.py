@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import pytest
 from keycloak.exceptions import KeycloakError
@@ -68,7 +68,7 @@ def test_token_sso_set_cookies(my_service, request_factory):
     response = my_service.token_sso(request)
 
     assert response.headers["Location"] == MyService.frontend_url
-    cookies_payload = {}
+    cookies_payload: Dict[Any, Any] = {}
     for cookie in response.headers.getlist("Set-Cookie"):
         cookies_payload = {**cookies_payload, **parse_cookie(cookie)}
     assert f"{MyService.sso_cookie_prefix}_access-token" in cookies_payload
@@ -83,7 +83,7 @@ def test_refresh_token_sso(my_service, request_factory):
     request = request_factory(json={"token": user.email})
     response = my_service.refresh_token_sso(request)
 
-    cookies_payload = {}
+    cookies_payload: Dict[Any, Any] = {}
     for cookie in response.headers.getlist("Set-Cookie"):
         cookies_payload = {**cookies_payload, **parse_cookie(cookie)}
     assert f"{MyService.sso_cookie_prefix}_access-token" in cookies_payload
