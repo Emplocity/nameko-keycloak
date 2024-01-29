@@ -9,7 +9,7 @@ from werkzeug.utils import redirect
 from werkzeug.wrappers import Request, Response
 
 from .auth import AuthenticationService
-from .types import FetchUserCallable, Token, TokenPayload, User
+from .types import FetchUserCallable, TokenPayload, User
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +27,7 @@ class KeycloakSsoServiceMixin:
 
      - ``keycloak`` which must be an instance of :class:`~nameko_keycloak.dependencies.KeycloakProvider`
      - ``sso_cookie_prefix`` - a string that will be used to namespace cookies (useful when there are multiple SSO-enabled apps hosted on same domain)
+     - ``sso_cookie_path`` - path part of the URL of your application, set as Path cookie attribute
      - ``sso_login_url`` - absolute URL to handler which delegates to :meth:`keycloak_login_sso`
      - ``sso_token_url`` - absolute URL to handler which delegates to :meth:`keycloak_token_sso`
      - ``sso_refresh_token_url`` - absolute URL to handler which delegates to :meth:`keycloak_refresh_token_sso`
@@ -35,6 +36,7 @@ class KeycloakSsoServiceMixin:
 
     keycloak: KeycloakOpenID
     sso_cookie_prefix: str = "nameko-keycloak"
+    sso_cookie_path: str = "/"
     sso_login_url: str = "/login-sso"
     sso_token_url: str = "/token-sso"
     sso_refresh_token_url: str = "/refresh-token-sso"
@@ -74,12 +76,16 @@ class KeycloakSsoServiceMixin:
 
     def keycloak_refresh_token_sso(self, request: Request) -> Response:
         """
-        Generates a new access token, given a valid refresh token.
+        Generates a new access token, given a cookie with a valid refresh token.
         """
-        token = json.loads(request.data)["token"]
+        refresh_token = request.cookies.get(f"{self.sso_cookie_prefix}_refresh-token")
+        if not refresh_token:
+            logger.warning("No refresh token found in cookies")
+            self.run_hook(HookMethod.FAILURE)
+            return Response("Invalid", status=401)
 
         try:
-            token_payload = self.keycloak.refresh_token(refresh_token=token)
+            token_payload = self.keycloak.refresh_token(refresh_token=refresh_token)
         except KeycloakError:
             self.run_hook(HookMethod.FAILURE)
             return Response("Invalid", status=401)
@@ -91,10 +97,14 @@ class KeycloakSsoServiceMixin:
         )
         return self._setup_response_cookie(response, token_payload)
 
-    def keycloak_validate_token_sso(self, request: Request, token: Token) -> Response:
+    def keycloak_validate_token_sso(self, request: Request) -> Response:
         """
         Checks that access token is valid and a corresponding local User exists.
         """
+        token = request.cookies.get(f"{self.sso_cookie_prefix}_access-token")
+        if not token:
+            logger.warning("No access token found in cookies")
+            return Response("Invalid", status=401)
         auth = AuthenticationService(self.keycloak, self.fetch_user)
         user = auth.get_user_from_access_token(token)
         if not user:
@@ -103,7 +113,7 @@ class KeycloakSsoServiceMixin:
 
     def keycloak_logout(self, request: Request) -> Response:
         """
-        Invalidates session in Keycloak and redirects to login form.
+        Invalidates session in Keycloak, deletes cookies and redirects to login.
 
         .. note::
             Keycloak logout API invalidates only refresh token, not access
@@ -118,7 +128,16 @@ class KeycloakSsoServiceMixin:
             logger.info("Logged out and invalidated Keycloak refresh token")
         except KeycloakError:
             self.run_hook(HookMethod.FAILURE)
-        return redirect(self.sso_login_url)
+        response = redirect(self.sso_login_url)
+        response.delete_cookie(
+            key=f"{self.sso_cookie_prefix}_access-token",
+            path=self.sso_cookie_path,
+        )
+        response.delete_cookie(
+            key=f"{self.sso_cookie_prefix}_refresh-token",
+            path=self.sso_cookie_path,
+        )
+        return response
 
     def _setup_response_cookie(
         self, response: Response, token_payload: TokenPayload
@@ -127,26 +146,15 @@ class KeycloakSsoServiceMixin:
             key=f"{self.sso_cookie_prefix}_access-token",
             value=token_payload["access_token"],
             secure=True,
-        )
-        response.set_cookie(
-            key=f"{self.sso_cookie_prefix}_expires-in",
-            value=str(token_payload["expires_in"]),
-            secure=True,
+            httponly=True,
+            path=self.sso_cookie_path,
         )
         response.set_cookie(
             key=f"{self.sso_cookie_prefix}_refresh-token",
             value=token_payload["refresh_token"],
             secure=True,
-        )
-        response.set_cookie(
-            key=f"{self.sso_cookie_prefix}_refresh-expires-in",
-            value=str(token_payload["refresh_expires_in"]),
-            secure=True,
-        )
-        response.set_cookie(
-            key=f"{self.sso_cookie_prefix}_refresh-token-url",
-            value=self.sso_refresh_token_url,
-            secure=True,
+            httponly=True,
+            path=self.sso_cookie_path,
         )
         return response
 

@@ -21,6 +21,7 @@ class MyService(KeycloakSsoServiceMixin):
     name = "my_service"
     keycloak = KeycloakProvider(Path("./keycloak.json"))
     sso_cookie_prefix = "my-service"
+    sso_cookie_path = "/sites/my-site/"
     sso_login_url = "/login-sso"
     sso_token_url = "/token-sso"
     sso_refresh_token_url = "/refresh-token-sso"
@@ -39,8 +40,8 @@ class MyService(KeycloakSsoServiceMixin):
         return self.keycloak_refresh_token_sso(request)
 
     @http("GET", "/validate-token-sso/<token>")
-    def validate_token_sso(self, request: Request, token: str) -> Response:
-        return self.keycloak_validate_token_sso(request, token)
+    def validate_token_sso(self, request: Request) -> Response:
+        return self.keycloak_validate_token_sso(request)
 
     @http("GET", "/logout")
     def logout(self, request: Request) -> Response:
@@ -80,7 +81,10 @@ def test_refresh_token_sso(my_service, request_factory):
     # ensure user "exists" in keycloak
     token_payload = my_service.keycloak.token(code=user.email)
 
-    request = request_factory(json={"token": user.email})
+    request = request_factory()
+    request.cookies = {
+        f"{MyService.sso_cookie_prefix}_refresh-token": token_payload["refresh_token"]
+    }
     response = my_service.refresh_token_sso(request)
 
     cookies_payload: Dict[Any, Any] = {}
@@ -97,7 +101,10 @@ def test_refresh_token_sso_invalid_token(my_service, request_factory):
     # ensure user "exists" in keycloak
     my_service.keycloak.token(code=user.email)
 
-    request = request_factory(json={"token": "keycloak_invalid__refresh_token"})
+    request = request_factory()
+    request.cookies = {
+        f"{MyService.sso_cookie_prefix}_refresh-token": "keycloak_invalid__refresh_token"
+    }
     response = my_service.refresh_token_sso(request)
 
     assert response.status_code == 401
@@ -106,10 +113,11 @@ def test_refresh_token_sso_invalid_token(my_service, request_factory):
 def test_validate_token_sso(my_service, request_factory):
     user = USERS["bob@example.com"]
     token_payload = my_service.keycloak.token(code=user.email)
-    access_token = token_payload["access_token"]
-
     request = request_factory()
-    response = my_service.validate_token_sso(request, token=access_token)
+    request.cookies = {
+        f"{MyService.sso_cookie_prefix}_access-token": token_payload["access_token"]
+    }
+    response = my_service.validate_token_sso(request)
 
     assert response.status_code == 200
 
@@ -119,7 +127,10 @@ def test_validate_token_sso_invalid_token(my_service, request_factory):
     _ = my_service.keycloak.token(code=user.email)
 
     request = request_factory()
-    response = my_service.validate_token_sso(request, token="keycloak_invalid_token")
+    request.cookies = {
+        f"{MyService.sso_cookie_prefix}_access-token": "keycloak_invalid_token"
+    }
+    response = my_service.validate_token_sso(request)
 
     assert response.status_code == 401
 
