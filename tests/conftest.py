@@ -37,6 +37,7 @@ class RequestFactory:
         request.method = method
         request.args = {} if args is None else args
         request.headers = {}
+        request.cookies = {}
         if form is not None:
             request.mimetype = "application/form-data"
             request.form = MultiDict(form)
