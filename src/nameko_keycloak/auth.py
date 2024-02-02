@@ -57,9 +57,7 @@ class AuthenticationService:
         """
         return self._get_user(access_token)
 
-    def get_user_from_request(
-        self, request: Request, cookie_name="access-token", **kwargs
-    ) -> Optional[User]:
+    def get_user_from_request(self, request: Request, **kwargs) -> Optional[User]:
         """
         Find a local User corresponding to some token in the HTTP request.
         """
