@@ -19,11 +19,14 @@ def get_token_from_request(request: Request, cookie_name: str) -> Optional[Token
     with token in header (sent by Oauth2 clients like Insomnia).
     """
     if token := request.cookies.get(cookie_name):
+        logger.debug(f"Found access token in cookies: {cookie_name=}")
         return token
     elif "Authorization" in request.headers:
         header = request.headers["Authorization"]
         token = header.replace("Bearer ", "", 1)
+        logger.debug("Found access token in Authorization header")
         return token
+    logger.debug("Access token not found in request")
     return None
 
 
@@ -50,6 +53,7 @@ class AuthenticationService:
         self.keycloak = keycloak
         self.fetch_user = fetch_user
         self.sso_cookie_prefix = sso_cookie_prefix
+        logger.debug(f"AuthenticationService setup: {sso_cookie_prefix=}")
 
     def get_user_from_access_token(self, access_token: Token) -> Optional[User]:
         """
@@ -79,4 +83,6 @@ class AuthenticationService:
         token_payload = self.get_token_payload(access_token)
         if not token_payload:
             return None
-        return self.fetch_user(token_payload["email"], token_payload)
+        user = self.fetch_user(token_payload["email"], token_payload)
+        logger.debug(f"User identified by token: {user=}")
+        return user
