@@ -22,7 +22,7 @@ project = "nameko-keycloak"
 year = "2021"
 author = "Emplocity"
 copyright = "{0}, {1}".format(year, author)
-version = release = "1.0.0a1"
+version = release = "1.0.0a2"
 
 pygments_style = "trac"
 templates_path = ["."]
