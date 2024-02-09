@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from jose import JOSEError
 from keycloak.exceptions import KeycloakError
@@ -27,7 +27,7 @@ class FakeKeycloak:
     """
 
     def __init__(self):
-        self.token_payloads: Dict[Token, TokenPayload] = {}
+        self.token_payloads: dict[Token, TokenPayload] = {}
 
     def auth_url(self, **kwargs) -> str:
         return "http://keycloak.url"
@@ -50,7 +50,7 @@ class FakeKeycloak:
         self.token_payloads[token] = token_payload
         return token_payload
 
-    def decode_token(self, token: Token, certs: List[Any]) -> TokenPayload:
+    def decode_token(self, token: Token, certs: list[Any]) -> TokenPayload:
         logger.info(f"Looking up {token} in {self.token_payloads}")
         try:
             return self.token_payloads[token]
@@ -69,5 +69,5 @@ class FakeKeycloak:
         token = f"token_{refresh_token}"
         del self.token_payloads[token]
 
-    def certs(self) -> List[Any]:
+    def certs(self) -> list[Any]:
         return []

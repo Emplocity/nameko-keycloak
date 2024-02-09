@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from jose import JOSEError
 from keycloak import KeycloakOpenID
@@ -72,7 +72,7 @@ class AuthenticationService:
             return None
         return self._get_user(token)
 
-    def get_token_payload(self, access_token: Token) -> Dict[str, Any]:
+    def get_token_payload(self, access_token: Token) -> dict[str, Any]:
         try:
             return self.keycloak.decode_token(access_token, self.keycloak.certs())
         except JOSEError:
