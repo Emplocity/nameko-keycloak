@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0.0 (unreleased)
+------------------
+
+* [Breaking change] Switch to HttpOnly cookies. This means that frontend
+  apps can no longer access the tokens.
+* Drop support for Python 3.8.
+
 0.7.0 (2022-10-13)
 ------------------
 
