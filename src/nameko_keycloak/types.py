@@ -1,7 +1,7 @@
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Optional
 
 # do not assume anything about a User type
 User = Any
 Token = str
-TokenPayload = Dict[str, Any]
+TokenPayload = dict[str, Any]
 FetchUserCallable = Callable[[str, TokenPayload], Optional[User]]

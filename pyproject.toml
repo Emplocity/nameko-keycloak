@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nameko-keycloak"
 description = "Helpers to integrate Single Sign-On in nameko-based applications using Keycloak."
-version = "0.7.0"
-requires-python = ">=3.8"
+version = "1.0.0a2"
+requires-python = ">=3.9"
 authors = [{name="Emplocity"}]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -16,7 +16,6 @@ classifiers = [
     "Operating System :: POSIX",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
@@ -43,7 +42,7 @@ license-files = [
 ]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 mypy_path = ["src/", "tests/"]
 namespace_packages = true
 no_implicit_optional = true
@@ -68,7 +67,7 @@ legacy_tox_ini = """
 [tox]
 isolated_build = True
 envlist =
-    check, py{38,39,310}-nameko{2,3}
+    check, py{39,310}-nameko{2,3}
 
 [testenv]
 deps =
@@ -98,7 +97,6 @@ commands =
 
 [gh-actions]
 python =
-    3.8: py38-nameko2, py38-nameko3
     3.9: py39-nameko2, py39-nameko3
     3.10: py310-nameko2, py310-nameko3, check
 

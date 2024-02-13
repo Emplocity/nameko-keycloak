@@ -1,5 +1,5 @@
 from json import dumps
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 from unittest.mock import MagicMock
 
 import pytest
@@ -29,14 +29,15 @@ class RequestFactory:
     def __call__(
         self,
         method: str = "GET",
-        form: Optional[Dict[str, Any]] = None,
+        form: Optional[dict[str, Any]] = None,
         json: Any = None,
-        args: Optional[Dict[str, Any]] = None,
+        args: Optional[dict[str, Any]] = None,
     ) -> Request:
         request = MagicMock(spec=Request)
         request.method = method
         request.args = {} if args is None else args
         request.headers = {}
+        request.cookies = {}
         if form is not None:
             request.mimetype = "application/form-data"
             request.form = MultiDict(form)
