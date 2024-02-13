@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.0 (unreleased)
+1.0.0 (2024-02-13)
 ------------------
 
 * [Breaking change] Switch to HttpOnly cookies. This means that frontend
