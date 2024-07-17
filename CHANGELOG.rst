@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0.0 (unreleased)
+------------------
+
+* [Likely breaking change] Upgrade python-keycloak to 4.x and switch from
+  python-jose to jwcrypto.
+
 1.0.0 (2024-02-13)
 ------------------
 
