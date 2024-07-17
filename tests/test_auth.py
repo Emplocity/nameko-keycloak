@@ -57,3 +57,12 @@ def test_authentication_service_get_token_payload(keycloak):
     decoded_payload = auth.get_token_payload(access_token)
 
     assert decoded_payload["email"] == user.email
+
+
+def test_authentication_service_get_token_payload_invalid(keycloak):
+    auth = AuthenticationService(keycloak, fetch_user)
+    access_token = "invalid"
+
+    decoded_payload = auth.get_token_payload(access_token)
+
+    assert decoded_payload == {}

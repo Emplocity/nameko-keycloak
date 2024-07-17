@@ -1,7 +1,7 @@
 import logging
 from typing import Any
 
-from jose import JOSEError
+from jwcrypto.common import JWException
 from keycloak.exceptions import KeycloakError
 
 from .types import Token, TokenPayload
@@ -50,12 +50,12 @@ class FakeKeycloak:
         self.token_payloads[token] = token_payload
         return token_payload
 
-    def decode_token(self, token: Token, certs: list[Any]) -> TokenPayload:
+    def decode_token(self, token: Token) -> TokenPayload:
         logger.info(f"Looking up {token} in {self.token_payloads}")
         try:
             return self.token_payloads[token]
         except KeyError:
-            raise JOSEError("Missing user")
+            raise JWException("Missing user")
 
     def refresh_token(self, refresh_token: Token, **kwargs) -> TokenPayload:
         token = f"token_{refresh_token}"

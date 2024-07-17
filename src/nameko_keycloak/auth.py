@@ -1,7 +1,7 @@
 import logging
 from typing import Any, Optional
 
-from jose import JOSEError
+from jwcrypto.common import JWException
 from keycloak import KeycloakOpenID
 from werkzeug import Request
 
@@ -74,8 +74,8 @@ class AuthenticationService:
 
     def get_token_payload(self, access_token: Token) -> dict[str, Any]:
         try:
-            return self.keycloak.decode_token(access_token, self.keycloak.certs())
-        except JOSEError:
+            return self.keycloak.decode_token(access_token)
+        except JWException:
             logger.exception("Failed to decode access token")
             return {}
 
