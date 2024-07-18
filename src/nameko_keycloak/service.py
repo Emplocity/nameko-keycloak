@@ -99,7 +99,8 @@ class KeycloakSsoServiceMixin:
                 # This is a normal situation, refresh token exists but expired.
                 # In this case frontend should redirect to login page.
                 logger.debug("Refresh token expired")
-            self.run_hook(HookMethod.FAILURE)
+            else:
+                self.run_hook(HookMethod.FAILURE)
             return Response("Invalid", status=401)
 
         response = Response(
