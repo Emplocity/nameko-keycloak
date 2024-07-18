@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nameko-keycloak"
 description = "Helpers to integrate Single Sign-On in nameko-based applications using Keycloak."
-version = "2.0.0-alpha1"
+version = "2.0.0-alpha2"
 requires-python = ">=3.9"
 authors = [{name="Emplocity"}]
 classifiers = [
