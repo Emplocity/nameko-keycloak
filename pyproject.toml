@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nameko-keycloak"
 description = "Helpers to integrate Single Sign-On in nameko-based applications using Keycloak."
-version = "1.0.0"
+version = "2.0.0-alpha1"
 requires-python = ">=3.9"
 authors = [{name="Emplocity"}]
 classifiers = [
@@ -24,15 +24,14 @@ classifiers = [
 readme = "README.rst"
 urls = {Homepage = "https://github.com/emplocity/nameko-keycloak"}
 dependencies = [
-    "nameko>=2,<4",
-    "python-keycloak>=0.25.0",
-    "python-jose>=3.0,<4.0",
-    "cryptography>=3.4",
-    "werkzeug>=1.0,<3.0",
+    "nameko>=2",
+    "jwcrypto>=1.5",
+    "python-keycloak>=4.2",
+    "werkzeug>=1.0",
 ]
 
 [project.optional-dependencies]
-test = ["pytest>=6.2.5,<7.0"]
+test = ["pytest>=7"]
 
 [tool.setuptools]
 include-package-data = true
@@ -54,7 +53,7 @@ check_untyped_defs = true
 [[tool.mypy.overrides]]
 module = [
     "eventlet.*",
-    "jose.*",
+    "jwcrypto.*",
     "keycloak.*",
     "nameko.*",
     "pytest.*",

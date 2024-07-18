@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.0 (2024-07-17)
+------------------
+
+* [Likely breaking change] Upgrade python-keycloak to 4.x and switch from
+  python-jose to jwcrypto. If you rely on catching exceptions from the
+  underlying JWT library yourself, you need to update that code.
+
 1.0.0 (2024-02-13)
 ------------------
 
