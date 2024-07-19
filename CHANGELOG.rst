@@ -1,12 +1,14 @@
 Changelog
 =========
 
-2.0.0 (2024-07-17)
+2.0.0 (2024-07-19)
 ------------------
 
 * [Likely breaking change] Upgrade python-keycloak to 4.x and switch from
   python-jose to jwcrypto. If you rely on catching exceptions from the
   underlying JWT library yourself, you need to update that code.
+* Don't engage failure hook when refresh token expires. This is a legitimate
+  use case and not an error.
 
 1.0.0 (2024-02-13)
 ------------------
