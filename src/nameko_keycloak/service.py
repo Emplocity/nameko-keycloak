@@ -86,8 +86,21 @@ class KeycloakSsoServiceMixin:
 
         try:
             token_payload = self.keycloak.refresh_token(refresh_token=refresh_token)
-        except KeycloakError:
-            self.run_hook(HookMethod.FAILURE)
+        except KeycloakError as e:
+            # Decode Keycloak error details and decide if it's serious enough
+            # to call failure hook
+            error_code: str = ""
+            try:
+                payload = json.loads(e.response_body.decode("utf-8"))
+                error_code = payload["error"]
+            except Exception:
+                logger.exception("Failed to decode Keycloak error details")
+            if error_code == "invalid_grant":
+                # This is a normal situation, refresh token exists but expired.
+                # In this case frontend should redirect to login page.
+                logger.debug("Refresh token expired")
+            else:
+                self.run_hook(HookMethod.FAILURE)
             return Response("Invalid", status=401)
 
         response = Response(
