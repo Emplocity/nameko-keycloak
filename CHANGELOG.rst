@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.1.0 (2025-05-14)
+------------------
+
+* Add support for Python 3.11, 3.12 and 3.13.
+* Decrease log level when an access token naturally expires, this is not an
+  exceptional situation.
+
 2.0.0 (2024-07-19)
 ------------------
 
