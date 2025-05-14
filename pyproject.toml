@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68.0"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,7 +11,6 @@ authors = [{name="Emplocity"}]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: Unix",
     "Operating System :: POSIX",
     "Programming Language :: Python",
@@ -22,6 +21,8 @@ classifiers = [
     "Topic :: Utilities",
 ]
 readme = "README.rst"
+license = " Apache-2.0"
+license-files = ["LICENSE"]
 urls = {Homepage = "https://github.com/emplocity/nameko-keycloak"}
 dependencies = [
     "nameko>=2",
@@ -36,9 +37,6 @@ test = ["pytest>=7"]
 [tool.setuptools]
 include-package-data = true
 zip-safe = false
-license-files = [
-    "LICENSE",
-]
 
 [tool.mypy]
 python_version = "3.9"
