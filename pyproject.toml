@@ -64,7 +64,7 @@ legacy_tox_ini = """
 [tox]
 isolated_build = True
 envlist =
-    check, py{39,310}-nameko{2,3}
+    check, py{39,310,311,312,313}-nameko{2,3}
 
 [testenv]
 deps =
@@ -95,6 +95,9 @@ commands =
 [gh-actions]
 python =
     3.9: py39-nameko2, py39-nameko3
-    3.10: py310-nameko2, py310-nameko3, check
+    3.10: py310-nameko2, py310-nameko3
+    3.11: py311-nameko2, py311-nameko3
+    3.12: py312-nameko2, py312-nameko3
+    3.13: py313-nameko2, py313-nameko3, check
 
 """
