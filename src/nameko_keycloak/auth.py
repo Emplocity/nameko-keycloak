@@ -2,6 +2,7 @@ import logging
 from typing import Any, Optional
 
 from jwcrypto.common import JWException
+from jwcrypto.jwt import JWTExpired
 from keycloak import KeycloakOpenID
 from werkzeug import Request
 
@@ -75,6 +76,9 @@ class AuthenticationService:
     def get_token_payload(self, access_token: Token) -> dict[str, Any]:
         try:
             return self.keycloak.decode_token(access_token)
+        except JWTExpired:
+            logger.debug("Failed to decode access token: token expired")
+            return {}
         except JWException:
             logger.exception("Failed to decode access token")
             return {}
