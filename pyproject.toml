@@ -31,7 +31,22 @@ dependencies = [
     "nameko>=2",
     "jwcrypto>=1.5",
     "python-keycloak>=4.2",
-    "werkzeug>=1.0",
+    "werkzeug>=2.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.9",
+    "coverage>=7.11",
+    "isort>=7.0",
+    "mypy>=1.18",
+    "pre-commit>=4.3",
+    "pytest>=8.4",
+    "pytest-cov>=6.1",
+    "rstcheck>=6.2",
+    "ruff>=0.14.1",
+    "sphinx>=8",
+    "sphinx-rtd-theme>=3",
 ]
 
 [project.optional-dependencies]
