@@ -15,6 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
@@ -89,39 +90,26 @@ select = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-isolated_build = True
 envlist =
-    check, py{310,311,312,313}
+    check, py{310,311,312,313,314}
 
 [testenv]
-deps =
-    -rtest_requirements.txt
+runner = uv-venv-lock-runner
 commands =
-    {posargs:pytest --cov={envsitepackagesdir}/nameko_keycloak -vv}
+    {posargs:nameko test --cov -vv}
 
 [testenv:check]
-deps =
-    -rtest_requirements.txt
-    build
-    check-manifest
-    docutils
-    pygments
-    readme-renderer
-    twine
-skip_install = true
+runner = uv-venv-lock-runner
 commands =
-    python -m build
-    twine check dist/*
-    check-manifest {toxinidir}
-    flake8 src tests
-    isort --verbose --check-only --diff src tests
-    mypy src
+    uv run ruff check src tests
+    uv run isort --verbose --check-only --diff src tests
+    uv run mypy src
 
 [gh-actions]
 python =
     3.10: py310
     3.11: py311
     3.12: py312
-    3.13: py313, check
-
+    3.13: py313
+    3.14: py314, check
 """
