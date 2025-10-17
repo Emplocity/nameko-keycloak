@@ -1,12 +1,8 @@
-[build-system]
-requires = ["setuptools>=77.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "nameko-keycloak"
+version = "3.0.0a1"
 description = "Helpers to integrate Single Sign-On in nameko-based applications using Keycloak."
-version = "2.1.0"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{name="Emplocity"}]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -26,13 +22,18 @@ classifiers = [
 readme = "README.rst"
 license = " Apache-2.0"
 license-files = ["LICENSE"]
-urls = {Homepage = "https://github.com/emplocity/nameko-keycloak"}
 dependencies = [
     "nameko>=2",
     "jwcrypto>=1.5",
     "python-keycloak>=4.2",
     "werkzeug>=2.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Emplocity/nameko-keycloak"
+Documentation = "https://nameko-keycloak.readthedocs.io/"
+Changelog = "https://nameko-keycloak.readthedocs.io/en/latest/changelog.html"
+"Issue Tracker" = "https://github.com/Emplocity/nameko-keycloak/issues"
 
 [dependency-groups]
 dev = [
@@ -52,9 +53,9 @@ dev = [
 [project.optional-dependencies]
 test = ["pytest>=8"]
 
-[tool.setuptools]
-include-package-data = true
-zip-safe = false
+[build-system]
+requires = ["uv_build>=0.8.23,<0.9.0"]
+build-backend = "uv_build"
 
 [tool.mypy]
 python_version = "3.9"
