@@ -1,5 +1,3 @@
-default_language_version:
-  python: python3.9
 repos:
   - repo: local
     hooks:
@@ -15,10 +13,11 @@ repos:
         entry: isort
         args: ["--check", "--diff"]
         types: [python]
-      - id: flake8
-        name: flake8
+      - id: ruff
+        name: ruff
         language: system
-        entry: flake8
+        entry: ruff
+        args: ["check"]
         types: [python]
       - id: mypy
         name: mypy

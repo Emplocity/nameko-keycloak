@@ -77,6 +77,16 @@ module = [
 ]
 ignore_missing_imports = true
 
+[tool.ruff.lint]
+ignore = [
+    "E501",
+]
+select = [
+    "E",
+    "F",
+    "W",
+]
+
 [tool.tox]
 legacy_tox_ini = """
 [tox]
