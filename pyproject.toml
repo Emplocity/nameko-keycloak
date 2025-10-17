@@ -70,9 +70,7 @@ check_untyped_defs = true
 module = [
     "eventlet.*",
     "jwcrypto.*",
-    "keycloak.*",
     "nameko.*",
-    "pytest.*",
     "werkzeug.*",
 ]
 ignore_missing_imports = true
