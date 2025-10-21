@@ -1,12 +1,8 @@
-[build-system]
-requires = ["setuptools>=77.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "nameko-keycloak"
+version = "2.2.0"
 description = "Helpers to integrate Single Sign-On in nameko-based applications using Keycloak."
-version = "2.1.0"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{name="Emplocity"}]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -15,34 +11,53 @@ classifiers = [
     "Operating System :: POSIX",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
 readme = "README.rst"
 license = " Apache-2.0"
 license-files = ["LICENSE"]
-urls = {Homepage = "https://github.com/emplocity/nameko-keycloak"}
 dependencies = [
-    "nameko>=2",
+    "nameko>=3.0rc11",
     "jwcrypto>=1.5",
     "python-keycloak>=4.2",
-    "werkzeug>=1.0",
+    "werkzeug>=2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Emplocity/nameko-keycloak"
+Documentation = "https://nameko-keycloak.readthedocs.io/"
+Changelog = "https://nameko-keycloak.readthedocs.io/en/latest/changelog.html"
+"Issue Tracker" = "https://github.com/Emplocity/nameko-keycloak/issues"
+
+[dependency-groups]
+dev = [
+    "black>=25.9",
+    "coverage>=7.11",
+    "isort>=7.0",
+    "mypy>=1.18",
+    "pre-commit>=4.3",
+    "pytest>=8.4",
+    "pytest-cov>=6.1",
+    "rstcheck>=6.2",
+    "ruff>=0.14.1",
+    "sphinx>=8",
+    "sphinx-rtd-theme>=3",
 ]
 
 [project.optional-dependencies]
 test = ["pytest>=8"]
 
-[tool.setuptools]
-include-package-data = true
-zip-safe = false
+[build-system]
+requires = ["uv_build>=0.8.23,<0.9.0"]
+build-backend = "uv_build"
 
 [tool.mypy]
-python_version = "3.9"
 mypy_path = ["src/", "tests/"]
 namespace_packages = true
 no_implicit_optional = true
@@ -55,52 +70,41 @@ check_untyped_defs = true
 module = [
     "eventlet.*",
     "jwcrypto.*",
-    "keycloak.*",
     "nameko.*",
-    "pytest.*",
     "werkzeug.*",
 ]
 ignore_missing_imports = true
 
+[tool.ruff.lint]
+ignore = [
+    "E501",
+]
+select = [
+    "E",
+    "F",
+    "W",
+]
+
 [tool.tox]
-legacy_tox_ini = """
-[tox]
-isolated_build = True
-envlist =
-    check, py{39,310,311,312,313}-nameko{2,3}
+env_list = ["check", "py310", "py311", "py312", "py313", "py314"]
 
-[testenv]
-deps =
-    nameko2: nameko>=2.14,<3
-    nameko3: nameko>=3.0.0rc11,<4
-    -rtest_requirements.txt
-commands =
-    {posargs:pytest --cov={envsitepackagesdir}/nameko_keycloak -vv}
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+commands =[["uv", "run", "nameko", "test", "--cov", "-vv"]]
 
-[testenv:check]
-deps =
-    -rtest_requirements.txt
-    build
-    check-manifest
-    docutils
-    pygments
-    readme-renderer
-    twine
-skip_install = true
-commands =
-    python -m build
-    twine check dist/*
-    check-manifest {toxinidir}
-    flake8 src tests
-    isort --verbose --check-only --diff src tests
-    mypy src
+[tool.tox.env.check]
+runner = "uv-venv-lock-runner"
+commands = [
+    ["uv", "run", "ruff", "check", "src", "tests"],
+    ["uv", "run", "isort", "--check-only", "src", "tests"],
+    ["uv", "run", "mypy", "src"],
+]
 
-[gh-actions]
-python =
-    3.9: py39-nameko2, py39-nameko3
-    3.10: py310-nameko2, py310-nameko3
-    3.11: py311-nameko2, py311-nameko3
-    3.12: py312-nameko2, py312-nameko3
-    3.13: py313-nameko2, py313-nameko3, check
-
-"""
+[tool.tox.gh-actions]
+python = """
+    3.10: py310
+    3.11: py311
+    3.12: py312
+    3.13: py313
+    3.14: py314, check
+    """

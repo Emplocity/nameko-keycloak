@@ -60,10 +60,10 @@ class KeycloakSsoServiceMixin:
         # annotate bound method here, otherwise mypy can't resolve self
         self.fetch_user: FetchUserCallable
         auth = AuthenticationService(self.keycloak, self.fetch_user)
-        if request.args.get("code"):
+        if code := request.args.get("code", ""):
             token = self.keycloak.token(
-                code=request.args.get("code"),
-                grant_type=["authorization_code"],
+                code=code,
+                grant_type="authorization_code",
                 redirect_uri=self.sso_token_url,
             )
             user = auth.get_user_from_access_token(access_token=token["access_token"])
@@ -91,6 +91,7 @@ class KeycloakSsoServiceMixin:
             # to call failure hook
             error_code: str = ""
             try:
+                assert e.response_body is not None
                 payload = json.loads(e.response_body.decode("utf-8"))
                 error_code = payload["error"]
             except Exception:
@@ -133,7 +134,9 @@ class KeycloakSsoServiceMixin:
             token. This is by design, as access tokens should be short lived
             anyway.
         """
-        refresh_token = request.cookies.get(f"{self.sso_cookie_prefix}_refresh-token")
+        refresh_token = request.cookies.get(
+            f"{self.sso_cookie_prefix}_refresh-token", ""
+        )
         if not refresh_token:
             logger.warning("No refresh token found in cookies")
         try:

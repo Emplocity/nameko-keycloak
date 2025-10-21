@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.2.0 (2025-10-21)
+------------------
+
+* Drop support for Python 3.9.
+* Add support for Python 3.14.
+* Switch project management to uv.
+
 2.1.0 (2025-05-14)
 ------------------
 
