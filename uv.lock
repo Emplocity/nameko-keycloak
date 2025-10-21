@@ -931,7 +931,7 @@ wheels = [
 
 [[package]]
 name = "nameko-keycloak"
-version = "3.0.0a1"
+version = "2.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "jwcrypto" },
