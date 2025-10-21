@@ -86,28 +86,25 @@ select = [
 ]
 
 [tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist =
-    check, py{310,311,312,313,314}
+env_list = ["check", "py310", "py311", "py312", "py313", "py314"]
 
-[testenv]
-runner = uv-venv-lock-runner
-commands =
-    {posargs:nameko test --cov -vv}
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+commands =[["uv", "run", "nameko", "test", "--cov", "-vv"]]
 
-[testenv:check]
-runner = uv-venv-lock-runner
-commands =
-    uv run ruff check src tests
-    uv run isort --verbose --check-only --diff src tests
-    uv run mypy src
+[tool.tox.env.check]
+runner = "uv-venv-lock-runner"
+commands = [
+    ["uv", "run", "ruff", "check", "src", "tests"],
+    ["uv", "run", "isort", "--check-only", "src", "tests"],
+    ["uv", "run", "mypy", "src"],
+]
 
-[gh-actions]
-python =
+[tool.tox.gh-actions]
+python = """
     3.10: py310
     3.11: py311
     3.12: py312
     3.13: py313
     3.14: py314, check
-"""
+    """
